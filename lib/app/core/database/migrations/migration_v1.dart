@@ -11,7 +11,7 @@ class MigrationV1 implements Migration {
         data_hora datetime,
         finalizado integer
       )
-    ''');
+      ''');
   }
 
   @override
