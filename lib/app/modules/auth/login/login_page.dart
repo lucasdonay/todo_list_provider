@@ -9,10 +9,26 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<LoginController>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: constraints.maxHeight,
+                maxWidth: constraints.maxWidth,
+              ),
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Text('TESTE'),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
-      body: Container(),
     );
   }
 }
