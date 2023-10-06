@@ -6,19 +6,16 @@ import '../ui/todolisticons.dart';
 class TodoListField extends StatelessWidget {
   final String label;
   final IconButton? suffixIconButton;
-
   final bool obscureText;
-  final ValueNotifier<bool> obscureTextVN;
+  ValueNotifier<bool> obscureTextVN;
 
   TodoListField({
     Key? key,
     required this.label,
-    this.suffixIconButton,
     this.obscureText = false,
-  })  : assert(
-          obscureText == true ? suffixIconButton == null : true,
-          'ObscureText não pode ser enviado em conjunto com suffixIconButtom',
-        ),
+    this.suffixIconButton,
+  })  : assert(obscureText == true ? suffixIconButton == null : true,
+            'obscuteText não pode ser enviado em conjunto de sufixiconbutton'),
         obscureTextVN = ValueNotifier(obscureText),
         super(key: key);
 
@@ -46,16 +43,16 @@ class TodoListField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             isDense: true,
-            suffixIcon: suffixIconButton ??
+             suffixIcon: suffixIconButton ??
                 (obscureText == true
                     ? IconButton(
                         onPressed: () {
-                          obscureTextVN.value == !obscureTextValue;
+                          obscureTextVN.value = !obscureTextValue;
                         },
                         icon: Icon(
                           !obscureTextValue
-                              ? TodoListIcons.eye
-                              : TodoListIcons.eye_slash,
+                              ? TodoListIcons.eye_slash
+                              : TodoListIcons.eye,
                           size: 15,
                         ),
                       )
