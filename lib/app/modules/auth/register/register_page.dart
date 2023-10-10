@@ -15,35 +15,35 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  final emailEC = TextEditingController();
-  final passwordEC = TextEditingController();
-  final confirmPasswordEC = TextEditingController();
-
-  @override
-  void dispose() {
-    emailEC.dispose();
-    passwordEC.dispose();
-    confirmPasswordEC.dispose();
-    context.read<RegisterController>().removeListener(() {});
-    super.dispose();
-  }
+  final _emailEC = TextEditingController();
+  final _passwordEC = TextEditingController();
+  final _confirmPasswordEC = TextEditingController();
 
   @override
   void initState() {
+    super.initState();
     context.read<RegisterController>().addListener(() {
       final controller = context.read<RegisterController>();
-      var sucess = controller.sucess;
+      var success = controller.success;
       var error = controller.error;
-      if (sucess) {
+
+      if (success) {
         Navigator.of(context).pop();
-      } else if (error) {
+      } else if (error != null && error.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(error),
           backgroundColor: Colors.red,
         ));
       }
     });
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailEC.dispose();
+    _passwordEC.dispose();
+    _confirmPasswordEC.dispose();
+    super.dispose();
   }
 
   @override
@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 children: [
                   TodoListField(
-                    controller: emailEC,
+                    controller: _emailEC,
                     label: 'E-mail',
                     validator: Validatorless.multiple([
                       Validatorless.required('Email requerido'),
@@ -108,7 +108,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 20,
                   ),
                   TodoListField(
-                    controller: passwordEC,
+                    controller: _passwordEC,
                     label: 'Senha',
                     obscureText: true,
                     validator: Validatorless.multiple([
@@ -123,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 20,
                   ),
                   TodoListField(
-                    controller: confirmPasswordEC,
+                    controller: _confirmPasswordEC,
                     label: 'Confirmar senha',
                     obscureText: true,
                     validator: Validatorless.multiple([
@@ -132,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           6, 'Senha precisa ter mais de 6 digitos'),
                       Validatorless.max(
                           20, 'Senha nao pode ter mais que 20 digitos'),
-                      Validatorless.compare(passwordEC, 'Senha diferente')
+                      Validatorless.compare(_passwordEC, 'Senha diferente')
                     ]),
                   ),
                   const SizedBox(
@@ -151,8 +151,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             _formKey.currentState?.validate() ?? false;
 
                         if (formValid) {
-                          final email = emailEC.text;
-                          final password = passwordEC.text;
+                          final email = _emailEC.text;
+                          final password = _passwordEC.text;
+
                           context
                               .read<RegisterController>()
                               .registerUser(email, password);

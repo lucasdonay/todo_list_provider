@@ -3,31 +3,31 @@ import 'package:todo_list_provider/app/exception/auth_exceptions.dart';
 import 'package:todo_list_provider/app/services/user/user_service.dart';
 
 class RegisterController extends ChangeNotifier {
-  var error = null;
-  var sucess = false;
   final UserService _userService;
 
   RegisterController({required UserService userService})
       : _userService = userService;
 
+  var error = null;
+  var success = false;
+
   Future<void> registerUser(String email, String password) async {
-    var error = null;
-    var sucess = false;
     try {
+      
       notifyListeners();
       final user = await _userService.register(email, password);
 
       if (user != null) {
         //sucesso
 
-        sucess = true;
+        success = true;
       } else {
         // error
-        sucess = false;
+        success = false;
         error = 'Erro ao registrar o usuario';
       }
     } on AuthExceptions catch (e) {
-      var error = e.message;
+      error = e.message;
     } finally {
       notifyListeners();
     }
