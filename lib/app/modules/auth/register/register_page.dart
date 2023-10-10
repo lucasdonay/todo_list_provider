@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extensios.dart';
 import 'package:todo_list_provider/app/core/widgets/todo_list_field.dart';
 import 'package:todo_list_provider/app/core/widgets/todo_list_logo.dart';
+import 'package:todo_list_provider/app/modules/auth/register/register_controller.dart';
 import 'package:validatorless/validatorless.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -22,7 +24,26 @@ class _RegisterPageState extends State<RegisterPage> {
     emailEC.dispose();
     passwordEC.dispose();
     confirmPasswordEC.dispose();
+    context.read<RegisterController>().removeListener(() {});
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    context.read<RegisterController>().addListener(() {
+      final controller = context.read<RegisterController>();
+      var sucess = controller.sucess;
+      var error = controller.error;
+      if (sucess) {
+        Navigator.of(context).pop();
+      } else if (error) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(error),
+          backgroundColor: Colors.red,
+        ));
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -111,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           6, 'Senha precisa ter mais de 6 digitos'),
                       Validatorless.max(
                           20, 'Senha nao pode ter mais que 20 digitos'),
-                           Validatorless.compare(passwordEC, 'Senha diferente')
+                      Validatorless.compare(passwordEC, 'Senha diferente')
                     ]),
                   ),
                   const SizedBox(
@@ -126,7 +147,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                       onPressed: () {
-                        _formKey.currentState!.validate();
+                        final formValid =
+                            _formKey.currentState?.validate() ?? false;
+
+                        if (formValid) {
+                          final email = emailEC.text;
+                          final password = passwordEC.text;
+                          context
+                              .read<RegisterController>()
+                              .registerUser(email, password);
+                        }
                       },
                       child: Padding(
                         padding: EdgeInsets.all(10.0),
