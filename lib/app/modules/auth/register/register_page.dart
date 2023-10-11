@@ -6,6 +6,8 @@ import 'package:todo_list_provider/app/core/widgets/todo_list_logo.dart';
 import 'package:todo_list_provider/app/modules/auth/register/register_controller.dart';
 import 'package:validatorless/validatorless.dart';
 
+import '../../../core/ui/messages.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -28,12 +30,9 @@ class _RegisterPageState extends State<RegisterPage> {
       var error = controller.error;
 
       if (success) {
-        Navigator.of(context).pop();
+        Messages.of(context).showInfo('Sucesso');
       } else if (error != null && error.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(error),
-          backgroundColor: Colors.red,
-        ));
+        Messages.of(context).showError('Erro na criacao da conta');
       }
     });
   }

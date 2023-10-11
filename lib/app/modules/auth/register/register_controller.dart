@@ -13,7 +13,6 @@ class RegisterController extends ChangeNotifier {
 
   Future<void> registerUser(String email, String password) async {
     try {
-      
       notifyListeners();
       final user = await _userService.register(email, password);
 

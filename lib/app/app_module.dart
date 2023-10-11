@@ -24,14 +24,11 @@ class AppModule extends StatelessWidget {
         ),
         // Registrando o userRepository
         Provider<UserRepository>(
-            create: (context) =>
-                UserRepositoryImpl(firebaseAuth: context.read())),
-        // Registrando o UserService
+          create: (context) => UserRepositoryImpl(firebaseAuth: context.read()),
+        ),
         Provider<UserService>(
-          create: (context) => UserServiceImpl(
-            UserRepository: context.read(),
-          ),
-        )
+          create: (context) => UserServiceImpl(userRepository: context.read()),
+        ),
       ],
       child: AppWidget(),
     );
