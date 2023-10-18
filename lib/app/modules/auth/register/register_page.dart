@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_list_provider/app/core/notifier/default_listener_notifier.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extensios.dart';
 import 'package:todo_list_provider/app/core/widgets/todo_list_field.dart';
 import 'package:todo_list_provider/app/core/widgets/todo_list_logo.dart';
 import 'package:todo_list_provider/app/modules/auth/register/register_controller.dart';
 import 'package:validatorless/validatorless.dart';
-
-import '../../../core/ui/messages.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -22,27 +21,30 @@ class _RegisterPageState extends State<RegisterPage> {
   final _confirmPasswordEC = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    context.read<RegisterController>().addListener(() {
-      final controller = context.read<RegisterController>();
-      var success = controller.success;
-      var error = controller.error;
-
-      if (success) {
-        Messages.of(context).showInfo('Sucesso');
-      } else if (error != null && error.isNotEmpty) {
-        Messages.of(context).showError('Erro na criacao da conta');
-      }
-    });
-  }
-
-  @override
   void dispose() {
     _emailEC.dispose();
     _passwordEC.dispose();
     _confirmPasswordEC.dispose();
+    context.read<RegisterController>().removeListener(() {});
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final defaultListener = DefaultListenerNotifier(
+        changeNotifier: context.read<RegisterController>());
+    defaultListener.listener(
+      context: context,
+      sucessCallback: (notifier, listenerInstance) {
+        listenerInstance.dispose();
+        Navigator.of(context).pop();
+      },
+      errorCallback: (notifier, listenerInstance) {
+        print('Ocorreu o erro aqui');
+      },
+    );
   }
 
   @override
