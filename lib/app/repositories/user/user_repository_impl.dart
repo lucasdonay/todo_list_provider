@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:todo_list_provider/app/exception/auth_exceptions.dart';
 
 import './user_repository.dart';
@@ -33,6 +34,34 @@ class UserRepositoryImpl extends UserRepository {
           );
         }
       }
+    }
+  }
+
+  @override
+  Future<User?> login(String email, String password) async {
+    try {
+      final userCredencial = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      return userCredencial.user;
+    } on PlatformException catch (e, s) {
+      print(e);
+      print(s);
+      throw AuthExceptions(
+        message: e.message ?? 'Erro ao realizar o login',
+      );
+    } on FirebaseAuthException catch (e, s) {
+      print(e);
+
+      if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+        throw AuthExceptions(
+          message: 'email ou senha invalidas',
+        );
+      }
+      print(s);
+      throw AuthExceptions(
+        message: e.message ?? 'Erro ao realizar o login',
+      );
     }
   }
 }

@@ -1,3 +1,31 @@
-import 'package:flutter/foundation.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:todo_list_provider/app/core/notifier/default_change_notifier.dart';
+import 'package:todo_list_provider/app/exception/auth_exceptions.dart';
 
-class LoginController extends ChangeNotifier {}
+import 'package:todo_list_provider/app/services/user/user_service.dart';
+
+class LoginController extends DefaultChangeNotifier {
+  final UserService _userService;
+
+  LoginController({required UserService userService})
+      : _userService = userService;
+
+  Future<void> login(String email, String password) async {
+    try {
+      showLoadingAndResetState();
+      notifyListeners();
+      final user = await _userService.login(email, password);
+
+      if (user != null) {
+        success();
+      } else {
+        setError('Usuario ou senha Invalidas');
+      }
+    } on AuthExceptions catch (e) {
+      setError(e.message);
+    } finally {
+      hideLoading();
+      notifyListeners();
+    }
+  }
+}
