@@ -10,10 +10,12 @@ class TodoListField extends StatelessWidget {
   final TextEditingController? controller;
   ValueNotifier<bool> obscureTextVN;
   final FormFieldValidator<String>? validator;
+  final FocusNode? focusNode;
 
   TodoListField({
     Key? key,
     required this.label,
+    this.focusNode,
     this.obscureText = false,
     this.suffixIconButton,
     this.controller,
@@ -31,6 +33,7 @@ class TodoListField extends StatelessWidget {
         return TextFormField(
           controller: controller,
           validator: validator,
+          focusNode: focusNode,
           decoration: InputDecoration(
             label: Text(label),
             labelStyle: TextStyle(fontSize: 15, color: Colors.black),

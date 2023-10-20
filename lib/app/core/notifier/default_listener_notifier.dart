@@ -12,8 +12,13 @@ class DefaultListenerNotifier {
     required BuildContext context,
     required SucessVoidCallback sucessCallback,
     ErrorVoidCallback? errorCallback,
+    EvervoidCallback? evervoidCallback,
   }) {
     changeNotifier.addListener(() {
+      if (evervoidCallback != null) {
+        evervoidCallback(changeNotifier, this);
+      }
+
       if (changeNotifier.loading) {
         Loader.show(context);
       } else {
@@ -42,6 +47,11 @@ typedef SucessVoidCallback = void Function(
 );
 
 typedef ErrorVoidCallback = void Function(
+  DefaultChangeNotifier notifier,
+  DefaultListenerNotifier listenerInstance,
+);
+
+typedef EvervoidCallback = void Function(
   DefaultChangeNotifier notifier,
   DefaultListenerNotifier listenerInstance,
 );

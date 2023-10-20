@@ -64,4 +64,28 @@ class UserRepositoryImpl extends UserRepository {
       );
     }
   }
+
+  @override
+  Future<User?> forgotPassword(String email) async {
+    try {
+      final loginMethods =
+          await _firebaseAuth.fetchSignInMethodsForEmail(email);
+
+      if (loginMethods.contains('password')) {
+        await _firebaseAuth.sendPasswordResetEmail(email: email);
+      } else if (loginMethods.contains('google')) {
+        throw AuthExceptions(
+            message:
+                'Cadastro realizado com o google, não pode ser resetado a senha');
+      } else {
+        throw AuthExceptions(
+            message:
+                'Email não cadastrado');
+      }
+    } on PlatformException catch (e, s) {
+      print(e);
+      print(s);
+      throw AuthExceptions(message: 'Erro ao resetar a senha');
+    }
+  }
 }

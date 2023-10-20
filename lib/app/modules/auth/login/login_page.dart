@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list_provider/app/core/notifier/default_listener_notifier.dart';
+import 'package:todo_list_provider/app/core/ui/messages.dart';
 import 'package:todo_list_provider/app/core/widgets/todo_list_logo.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:todo_list_provider/app/modules/auth/login/login_controller.dart';
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
+  final _emailFocus = FocusNode();
 
   executar(email, password) {
     context.read<LoginController>().login(email, password);
@@ -26,14 +28,21 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    super.initState();
     DefaultListenerNotifier(changeNotifier: context.read<LoginController>())
         .listener(
       context: context,
       sucessCallback: ((notifier, listenerInstance) {
         print('login efetuado com sucesso');
       }),
+      evervoidCallback: (notifier, listenerInstance) {
+        if (notifier is LoginController) {
+          if (notifier.hasInfo) {
+            Messages.of(context).showInfo(notifier.infoMessage!);
+          }
+        }
+      },
     );
-    super.initState();
   }
 
   @override
@@ -71,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                                 label: 'E-mail',
                                 controller: _emailEC,
                                 obscureText: false,
+                                focusNode: _emailFocus,
                                 validator: Validatorless.multiple([
                                   Validatorless.required('Email Obrigatorio'),
                                   Validatorless.email('Email invalido')
@@ -96,7 +106,17 @@ class _LoginPageState extends State<LoginPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if (_emailEC.text.isNotEmpty) {
+                                        context
+                                            .read<LoginController>()
+                                            .forgotPassword(_emailEC.text);
+                                      } else {
+                                        _emailFocus.requestFocus();
+                                        Messages.of(context).showError(
+                                            'E-mail não esta preenchido');
+                                      }
+                                    },
                                     child: Text('Esqueceu sua senha?'),
                                   ),
                                   ElevatedButton(
