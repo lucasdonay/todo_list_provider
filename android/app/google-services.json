@@ -12,7 +12,28 @@
           "package_name": "br.com.lucasdonay.todo_list_provider"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "935289821077-0pb9c6htih5masrf95dfqi2h6ptt1omf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.lucasdonay.todo_list_provider",
+            "certificate_hash": "df3852cebf6da48de6b55d41e6bb294b3f78a72f"
+          }
+        },
+        {
+          "client_id": "935289821077-cr2agq9chp66esb4t2c47leb0pfasm1a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.lucasdonay.todo_list_provider",
+            "certificate_hash": "d13aa9b4a43e9349d36e6bae88149c8131ec1c76"
+          }
+        },
+        {
+          "client_id": "935289821077-04moubeqd3nalj992o7or4q5vo45le0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCr-Rmxt6dZqA42rjfyoS89ut4cRZ4rGKw"
@@ -20,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935289821077-04moubeqd3nalj992o7or4q5vo45le0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

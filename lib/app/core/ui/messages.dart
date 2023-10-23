@@ -19,5 +19,5 @@ class Messages {
   }
 
   void showError(String message) => showMessage(message, Colors.red);
-  void showInfo(String message) => showMessage(message, Colors.red);
+  void showInfo(String message) => showMessage(message, Color(0xff5C77CE));
 }

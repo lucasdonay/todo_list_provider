@@ -14,15 +14,14 @@ class AppModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //'MultiProvider' SEMPRE precisa de um objeto para iniciar
     return MultiProvider(
       providers: [
-        // Registrando o firebaseauth
         Provider(create: (_) => FirebaseAuth.instance),
         Provider(
           create: (_) => SqliteConnectionFactory(),
           lazy: false,
         ),
-        // Registrando o userRepository
         Provider<UserRepository>(
           create: (context) => UserRepositoryImpl(firebaseAuth: context.read()),
         ),

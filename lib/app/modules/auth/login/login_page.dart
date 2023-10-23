@@ -32,15 +32,15 @@ class _LoginPageState extends State<LoginPage> {
     DefaultListenerNotifier(changeNotifier: context.read<LoginController>())
         .listener(
       context: context,
-      sucessCallback: ((notifier, listenerInstance) {
-        print('login efetuado com sucesso');
-      }),
       evervoidCallback: (notifier, listenerInstance) {
         if (notifier is LoginController) {
           if (notifier.hasInfo) {
             Messages.of(context).showInfo(notifier.infoMessage!);
           }
         }
+      },
+      sucessCallback: (notifier, listenerInstance) {
+        Messages.of(context).showInfo('Login realizado com sucesso');
       },
     );
   }
@@ -107,17 +107,19 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   TextButton(
                                     onPressed: () {
+                                      //esqueceu senha
                                       if (_emailEC.text.isNotEmpty) {
+                                        //recuperar senha
                                         context
                                             .read<LoginController>()
                                             .forgotPassword(_emailEC.text);
                                       } else {
                                         _emailFocus.requestFocus();
                                         Messages.of(context).showError(
-                                            'E-mail não esta preenchido');
+                                            "Digite um email para recuperar senha");
                                       }
                                     },
-                                    child: Text('Esqueceu sua senha?'),
+                                    child: const Text("Esqueceu a senha?"),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
@@ -173,7 +175,9 @@ class _LoginPageState extends State<LoginPage> {
                               child: SignInButton(
                                 Buttons.google,
                                 text: 'Continue com o google',
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.read<LoginController>().googleLogin();
+                                },
                                 padding: EdgeInsets.all(5),
                                 shape: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30),
