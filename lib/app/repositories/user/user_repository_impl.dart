@@ -19,12 +19,13 @@ class UserRepositoryImpl extends UserRepository {
       final googleSignIn = GoogleSignIn();
       final googleUser = await googleSignIn.signIn();
 
-      if (googleUser != null) {
-        var loginMethods =
-            await _firebaseAuth.fetchSignInMethodsForEmail(googleUser.email);
+      print('GOOGLE USER : ${googleUser}');
 
+      if (googleUser != null) {
+        final loginMethods =
+            await _firebaseAuth.fetchSignInMethodsForEmail(googleUser.email);
         print('LOGIN METHODS: ${loginMethods}');
-        if (loginMethods.contains('password')) {
+        if (loginMethods.contains('email')) {
           throw AuthExceptions(
               message:
                   'Você já utilizou o e-mail para o cadastro, caso tenha esquecido sua senha por favor clique em esqueceu sua senha ');
@@ -134,7 +135,7 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<void> googleLogout() async {
+  Future<void> logout() async {
     await GoogleSignIn().signOut();
     _firebaseAuth.signOut();
   }
