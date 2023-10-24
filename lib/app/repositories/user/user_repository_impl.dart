@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -45,16 +47,17 @@ class UserRepositoryImpl extends UserRepository {
       print(e);
       print(s);
 
-      if (e.code == 'sign_in_failed') {
-        throw AuthExceptions(message: 'Login falhou');
-      }
-
       if (e.code == 'account-exists-with-different-credential') {
         throw AuthExceptions(
           message: '''
+        
         Login inválido você se registrou no Todolist com os seguintes provedores: ${loginMethods?.join(',')}
         ''',
         );
+      }
+
+      if (e.code == 'sign_in_failed') {
+        throw AuthExceptions(message: 'Login falhou');
       }
     }
   }
@@ -138,5 +141,15 @@ class UserRepositoryImpl extends UserRepository {
   Future<void> logout() async {
     await GoogleSignIn().signOut();
     _firebaseAuth.signOut();
+  }
+
+  @override
+  Future<void> updateDisplayName(String name) async {
+    final user = _firebaseAuth.currentUser;
+
+    if (user != null) {
+      await user.updateDisplayName(name);
+      user.reload();
+    }
   }
 }
