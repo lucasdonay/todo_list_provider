@@ -14,12 +14,11 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      elevation: 15,
+      backgroundColor: context.primaryColor,
       child: ListView(
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(
-              color: context.primaryColor.withAlpha(70),
-            ),
             child: Row(
               children: [
                 Selector<AuthProvider, String>(
@@ -39,7 +38,7 @@ class HomeDrawer extends StatelessWidget {
                       builder: (_, value, __) {
                         return Text(
                           value,
-                          style: context.textTheme.headlineSmall,
+                          style: TextStyle(fontSize: 23, color: Colors.white),
                         );
                       },
                       selector: (context, authProvider) {
@@ -58,7 +57,9 @@ class HomeDrawer extends StatelessWidget {
                   context: context,
                   builder: (_) {
                     return AlertDialog(
-                      title: Text('Alterar nome'),
+                      title: Text(
+                        'Alterar nome',
+                      ),
                       content: TextField(
                         onChanged: (value) => nameVN.value = value,
                       ),
@@ -87,17 +88,22 @@ class HomeDrawer extends StatelessWidget {
                                   'Nome alterado com sucesso', Colors.green);
                             }
                           },
-                          child: Text('Alterar'),
+                          child: Text(
+                            'Alterar',
+                            style: TextStyle(color: context.primaryColor),
+                          ),
                         ),
                       ],
                     );
                   });
             },
-            title: Text('Alterar nome'),
+            title: Text('Alterar nome',
+                style: TextStyle(color: Colors.white, fontSize: 20)),
           ),
           ListTile(
             onTap: () => context.read<AuthProvider>().logout(),
-            title: Text('Sair'),
+            title: Text('Sair',
+                style: TextStyle(color: Colors.white, fontSize: 20)),
           )
         ],
       ),

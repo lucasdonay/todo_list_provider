@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extensios.dart';
+import 'package:todo_list_provider/app/core/ui/todolisticons.dart';
 
 import 'widgets/home_drawer.dart';
+import 'widgets/home_filters.dart';
+import 'widgets/home_header.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,12 +12,50 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: HomeDrawer(),
       appBar: AppBar(
-        title: const Text('Home Page'),
-        backgroundColor: context.primaryColor,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: context.primaryColor),
+        actions: [
+          PopupMenuButton(
+            icon: Icon(
+              TodoListIcons.filter,
+              size: 17,
+              color: context.primaryColor,
+            ),
+            itemBuilder: (_) => [
+              PopupMenuItem<bool>(
+                child: Text('Mostrar tarefas concluidas'),
+              )
+            ],
+          )
+        ],
       ),
-      body: Container(),
+      backgroundColor: Colors.white,
+      drawer: HomeDrawer(),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: constraints.maxHeight,
+                minWidth: constraints.minWidth,
+              ),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: IntrinsicHeight(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HomeHeader(),
+                    HomeFilters(),
+                  ],
+                )),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
