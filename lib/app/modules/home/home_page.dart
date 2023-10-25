@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extensios.dart';
 import 'package:todo_list_provider/app/core/ui/todolisticons.dart';
+import 'package:todo_list_provider/app/modules/home/widgets/home_tasks.dart';
 
 import 'widgets/home_drawer.dart';
 import 'widgets/home_filters.dart';
 import 'widgets/home_header.dart';
+import 'widgets/home_week_filter.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -49,6 +51,8 @@ class HomePage extends StatelessWidget {
                   children: [
                     HomeHeader(),
                     HomeFilters(),
+                    HomeWeekFilter(),
+                    HomeTasks(),
                   ],
                 )),
               ),

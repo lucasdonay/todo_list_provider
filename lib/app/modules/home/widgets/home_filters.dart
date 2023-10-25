@@ -28,6 +28,12 @@ class _HomeFiltersState extends State<HomeFilters> {
           child: Row(
             children: [
               TodoCardFilter(),
+              TodoCardFilter(),
+              TodoCardFilter(),
+              TodoCardFilter(),
+              TodoCardFilter(),
+              TodoCardFilter(),
+              TodoCardFilter(),
             ],
           ),
         )
