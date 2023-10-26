@@ -16,11 +16,15 @@ class HomeTasks extends StatelessWidget {
             height: 20,
           ),
           Text(
-            'TASK\'S DE HOJE',
+            'Task\'s de hoje',
             style: context.titleStyle,
           ),
           Column(
             children: [
+              Task(),
+              Task(),
+              Task(),
+              Task(),
               Task(),
               Task(),
               Task(),

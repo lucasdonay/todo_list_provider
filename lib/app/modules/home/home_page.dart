@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFFFAFBFE),
         elevation: 0,
         iconTheme: IconThemeData(color: context.primaryColor),
         actions: [
@@ -33,14 +33,21 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: context.primaryColor,
+        onPressed: () {},
+        child: Icon(
+          Icons.add,
+        ),
+      ),
+      backgroundColor: Color(0xFFFAFBFE),
       drawer: HomeDrawer(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxHeight: constraints.maxHeight,
+                minHeight: constraints.maxHeight,
                 minWidth: constraints.minWidth,
               ),
               child: Container(
@@ -53,6 +60,9 @@ class HomePage extends StatelessWidget {
                     HomeFilters(),
                     HomeWeekFilter(),
                     HomeTasks(),
+                    const SizedBox(
+                      height: 40,
+                    ),
                   ],
                 )),
               ),
