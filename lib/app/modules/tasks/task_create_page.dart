@@ -8,9 +8,9 @@ import 'package:todo_list_provider/app/modules/tasks/task_create_controller.dart
 import 'widget/calendar_button.dart';
 
 class TaskCreatePage extends StatelessWidget {
-  TaskCreateController _controller;
+  final TaskCreateController _controller;
 
-  TaskCreatePage({
+  const TaskCreatePage({
     Key? key,
     required TaskCreateController controller,
   })  : _controller = controller,
