@@ -8,6 +8,7 @@ import 'package:todo_list_provider/app/modules/home/home_module.dart';
 import 'package:todo_list_provider/app/modules/tasks/tasks_module.dart';
 
 import 'modules/splash/splash_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
@@ -43,6 +44,15 @@ class _AppWidgetState extends State<AppWidget> {
         ...HomeModule().routers,
         ...TasksModule().routers,
       },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('pt'), // English
+        Locale('en'), // Spanish
+      ],
       home: SplashPage(),
     );
   }
