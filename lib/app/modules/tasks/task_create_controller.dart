@@ -19,7 +19,7 @@ class TaskCreateController extends DefaultChangeNotifier {
 
   DateTime? get selectedDate => _selectedDate;
 
-  void save(String description) async {
+   void save(String description) async {
     try {
       showLoadingAndResetState();
       notifyListeners();
@@ -27,11 +27,12 @@ class TaskCreateController extends DefaultChangeNotifier {
         await _tasksService.save(_selectedDate!, description);
         success();
       } else {
-        setError('Selecione uma data para a task');
+        setError('Data não selecionada');
       }
     } catch (e, s) {
       print(e);
       print(s);
+      setError('Erro ao cadastrar, tente novamente.');
     } finally {
       hideLoading();
       notifyListeners();

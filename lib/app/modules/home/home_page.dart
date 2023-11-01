@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extensios.dart';
 import 'package:todo_list_provider/app/core/ui/todolisticons.dart';
+import 'package:todo_list_provider/app/modules/home/home_controller.dart';
 import 'package:todo_list_provider/app/modules/home/widgets/home_tasks.dart';
-import 'package:todo_list_provider/app/modules/tasks/task_create_page.dart';
 import 'package:todo_list_provider/app/modules/tasks/tasks_module.dart';
 
 import 'widgets/home_drawer.dart';
@@ -11,8 +10,22 @@ import 'widgets/home_filters.dart';
 import 'widgets/home_header.dart';
 import 'widgets/home_week_filter.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  final HomeController _homeController;
+  HomePage({Key? key, required HomeController homeController})
+      : _homeController = homeController,
+        super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    widget._homeController.loadTotalTasks();
+  }
 
   void _goToCreateTask(BuildContext context) {
     Navigator.of(context).push(PageRouteBuilder(
