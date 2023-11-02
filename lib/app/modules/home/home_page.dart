@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list_provider/app/core/notifier/default_listener_notifier.dart';
 import 'package:todo_list_provider/app/core/ui/theme_extensios.dart';
 import 'package:todo_list_provider/app/core/ui/todolisticons.dart';
+import 'package:todo_list_provider/app/models/task_filter_enum.dart';
 import 'package:todo_list_provider/app/modules/home/home_controller.dart';
 import 'package:todo_list_provider/app/modules/home/widgets/home_tasks.dart';
 import 'package:todo_list_provider/app/modules/tasks/tasks_module.dart';
@@ -24,24 +26,37 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    widget._homeController.loadTotalTasks();
+    DefaultListenerNotifier(changeNotifier: widget._homeController).listener(
+        context: context,
+        sucessCallback: ((notifier, listenerInstance) {
+          listenerInstance.dispose();
+        }));
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget._homeController.loadTotalTasks();
+      widget._homeController.findTasks(filter: TaskFilterEnum.today);
+    });
   }
 
-  void _goToCreateTask(BuildContext context) {
-    Navigator.of(context).push(PageRouteBuilder(
-        transitionDuration: Duration(milliseconds: 600),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          animation =
-              CurvedAnimation(parent: animation, curve: Curves.easeInQuad);
-          return ScaleTransition(
-            scale: animation,
-            alignment: Alignment.bottomRight,
-            child: child,
-          );
-        },
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return TasksModule().getPage('/task/create', context);
-        }));
+  void _goToCreateTask(BuildContext context) async {
+    await Navigator.of(context).push(
+      PageRouteBuilder(
+          transitionDuration: Duration(milliseconds: 600),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            animation =
+                CurvedAnimation(parent: animation, curve: Curves.easeInQuad);
+            return ScaleTransition(
+              scale: animation,
+              alignment: Alignment.bottomRight,
+              child: child,
+            );
+          },
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return TasksModule().getPage('/task/create', context);
+          }),
+    );
+
+    widget._homeController.refreshPage();
   }
 
   @override
