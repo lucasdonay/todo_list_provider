@@ -31,8 +31,11 @@ class TasksServiceImpl implements TasksService {
     var startFilter = DateTime(
       today.year,
       today.month,
-      today.year,
+      today.day,
+      0,
+      0,
     );
+
     DateTime endFilter;
 
     if (startFilter.weekday != DateTime.monday) {
@@ -44,6 +47,13 @@ class TasksServiceImpl implements TasksService {
 
     final tasks = await _tasksRepository.findByPeriod(startFilter, endFilter);
     return WeekTaskModel(
-        startDate: startFilter, endDate: endFilter, tasks: tasks);
+      startDate: startFilter,
+      endDate: endFilter,
+      tasks: tasks,
+    );
   }
+
+  @override
+  Future<void> checkOrUncheckTask(TaskModel task) =>
+      _tasksRepository.checkOrUncheckTask(task);
 }
